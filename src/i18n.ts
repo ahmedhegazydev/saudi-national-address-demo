@@ -1,0 +1,81 @@
+import type { Language, NationalAddressErrorCode } from './lib/API';
+
+const en = {
+  appTitle: 'National Address',
+  mock: 'MOCK',
+  tabMap: 'Map',
+  tabSearch: 'Search',
+  tabVerify: 'Verify',
+  mapHint: 'Long-press the map to drop a pin',
+  myLocation: 'My location',
+  locationDenied: 'Location permission denied',
+  noAddress: 'No parcel address at this point',
+  postCode: 'Postal code',
+  buildingNumber: 'Building no.',
+  additionalNumber: 'Additional no.',
+  street: 'Street',
+  district: 'District',
+  city: 'City',
+  region: 'Region',
+  searchPlaceholder: 'e.g. 8228 12643 or a street name',
+  searchHint: 'Type at least 3 characters',
+  results: 'results',
+  noResults: 'No results',
+  zipCode: 'Postal code (5 digits)',
+  verify: 'Verify address',
+  verified: 'Address verified ✓',
+  notVerified: 'Address not found ✗',
+  invalidInput: 'Building no. and additional no. are 4 digits, postal code is 5 digits',
+  loading: 'Loading…',
+  errors: {
+    INVALID_KEY: 'Invalid or missing API key (401)',
+    QUOTA_EXCEEDED: 'Subscription quota exceeded (403)',
+    RATE_LIMITED: 'Too many requests, wait a minute (Starter = 5/min)',
+    NETWORK: 'Network error, check your connection',
+    SERVER: 'National Address service error, try again later',
+    UNKNOWN: 'Unexpected error',
+  } satisfies Record<NationalAddressErrorCode, string>,
+};
+
+type Strings = typeof en;
+
+const ar: Strings = {
+  appTitle: 'العنوان الوطني',
+  mock: 'تجريبي',
+  tabMap: 'الخريطة',
+  tabSearch: 'بحث',
+  tabVerify: 'تحقق',
+  mapHint: 'اضغط مطولاً على الخريطة لوضع دبوس',
+  myLocation: 'موقعي',
+  locationDenied: 'تم رفض صلاحية الموقع',
+  noAddress: 'لا يوجد عنوان مبنى في هذه النقطة',
+  postCode: 'الرمز البريدي',
+  buildingNumber: 'رقم المبنى',
+  additionalNumber: 'الرقم الإضافي',
+  street: 'الشارع',
+  district: 'الحي',
+  city: 'المدينة',
+  region: 'المنطقة',
+  searchPlaceholder: 'مثال: 8228 12643 أو اسم شارع',
+  searchHint: 'اكتب ٣ أحرف على الأقل',
+  results: 'نتيجة',
+  noResults: 'لا توجد نتائج',
+  zipCode: 'الرمز البريدي (٥ أرقام)',
+  verify: 'تحقق من العنوان',
+  verified: 'العنوان صحيح ✓',
+  notVerified: 'العنوان غير موجود ✗',
+  invalidInput: 'رقم المبنى والرقم الإضافي ٤ أرقام، والرمز البريدي ٥ أرقام',
+  loading: 'جاري التحميل…',
+  errors: {
+    INVALID_KEY: 'مفتاح API غير صحيح أو غير موجود (401)',
+    QUOTA_EXCEEDED: 'تم تجاوز حد الاشتراك (403)',
+    RATE_LIMITED: 'طلبات كثيرة، انتظر دقيقة (Starter = ٥ في الدقيقة)',
+    NETWORK: 'خطأ في الشبكة، تحقق من الاتصال',
+    SERVER: 'خطأ في خدمة العنوان الوطني، حاول لاحقاً',
+    UNKNOWN: 'خطأ غير متوقع',
+  },
+};
+
+export const strings: Record<Language, Strings> = { A: ar, E: en };
+
+export type { Strings };

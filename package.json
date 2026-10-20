@@ -1,0 +1,37 @@
+{
+  "name": "saudi-national-address-demo",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "dependencies": {
+    "axios": "^1.20.0",
+    "expo": "~58.0.16",
+    "expo-location": "~58.0.18",
+    "expo-status-bar": "~58.0.3",
+    "react": "19.3.0",
+    "react-native": "0.88.0",
+    "react-native-maps": "1.29.11",
+    "react-native-safe-area-context": "~5.10.1"
+  },
+  "devDependencies": {
+    "@types/jest": "30.0.0",
+    "@types/react": "~19.3.0",
+    "jest": "~30.5.2",
+    "jest-expo": "~58.0.11",
+    "typescript": "~6.0.3"
+  },
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "test": "jest --no-watchman",
+    "typecheck": "tsc --noEmit"
+  },
+  "private": true,
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  }
+}
