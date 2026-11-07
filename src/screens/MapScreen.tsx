@@ -71,19 +71,30 @@ export const MapScreen = ({ language, t, rtl, focus }: Props) => {
     lookup(coordinate);
   };
 
+  // The last known fix comes back instantly. A fresh GPS fix can take several
+  // seconds, especially on simulators and indoors.
+  const currentCoordinate = async (): Promise<Coordinate> => {
+    const position =
+      (await Location.getLastKnownPositionAsync({ maxAge: 60_000 })) ??
+      (await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced }));
+    return { latitude: position.coords.latitude, longitude: position.coords.longitude };
+  };
+
   const onMyLocation = async () => {
+    setError(null);
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
       setLocationDenied(status !== 'granted');
       if (status !== 'granted') {
         return;
       }
-      const position = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
-      const coordinate = { latitude: position.coords.latitude, longitude: position.coords.longitude };
+      setLoading(true);
+      const coordinate = await currentCoordinate();
       moveTo(coordinate);
       lookup(coordinate);
     } catch (e) {
       // Location services switched off, or no GPS fix.
+      setLoading(false);
       setError(e);
     }
   };

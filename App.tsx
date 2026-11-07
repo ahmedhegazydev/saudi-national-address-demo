@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Keyboard, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { strings } from './src/i18n';
@@ -28,13 +28,14 @@ export default function App() {
   ];
 
   const onSelectAddress = (address: NationalAddress) => {
+    Keyboard.dismiss();
     setFocus(address);
     setTab('map');
   };
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
+      <SafeAreaView style={styles.safe} edges={['top']}>
         <StatusBar style="light" />
         <View style={[styles.header, rtl && styles.rowReverse]}>
           <Text style={styles.title}>{t.appTitle}</Text>
@@ -46,21 +47,24 @@ export default function App() {
         </View>
 
         <View style={styles.body}>
-          {/* Keep the map mounted so its position survives tab switches. */}
-          <View style={[styles.fill, tab !== 'map' && styles.hidden]}>
-            <MapScreen language={language} t={t} rtl={rtl} focus={focus} />
-          </View>
-          {tab === 'search' ? <SearchScreen language={language} t={t} rtl={rtl} onSelect={onSelectAddress} /> : null}
-          {tab === 'verify' ? <VerifyScreen language={language} t={t} rtl={rtl} /> : null}
+          {/* The map stays mounted and laid out, and the other tabs draw on top of it.
+              Hiding a MapView with display:none makes iOS reset its camera and markers. */}
+          <MapScreen language={language} t={t} rtl={rtl} focus={focus} />
+          {tab !== 'map' ? (
+            <View style={styles.overlay}>
+              {tab === 'search' ? <SearchScreen language={language} t={t} rtl={rtl} onSelect={onSelectAddress} /> : null}
+              {tab === 'verify' ? <VerifyScreen language={language} t={t} rtl={rtl} /> : null}
+            </View>
+          ) : null}
         </View>
 
-        <View style={[styles.tabBar, rtl && styles.rowReverse]}>
+        <SafeAreaView edges={['bottom']} style={[styles.tabBar, rtl && styles.rowReverse]}>
           {tabs.map(({ key, label }) => (
             <Pressable key={key} style={styles.tab} onPress={() => setTab(key)}>
               <Text style={[styles.tabText, tab === key && styles.tabTextActive]}>{label}</Text>
             </Pressable>
           ))}
-        </View>
+        </SafeAreaView>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -97,8 +101,7 @@ const styles = StyleSheet.create({
   },
   langText: { color: colors.primaryText, fontWeight: '600' },
   body: { flex: 1, backgroundColor: colors.background },
-  fill: { flex: 1 },
-  hidden: { display: 'none' },
+  overlay: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, backgroundColor: colors.background },
   tabBar: { flexDirection: 'row', backgroundColor: colors.surface, borderTopWidth: 1, borderTopColor: colors.border },
   tab: { flex: 1, alignItems: 'center', paddingVertical: spacing.md },
   tabText: { color: colors.muted, fontSize: 15, fontWeight: '500' },
